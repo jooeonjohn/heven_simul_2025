@@ -1,13 +1,15 @@
 #!/usr/bin/env python
 
 import rospy
-from sensor_msgs.msg import NavSatFix
+from morai_msgs.msg import GPSMessage
 import csv
 import math
 import os
 import matplotlib.pyplot as plt
 import signal
 import sys
+from geographic_msgs.msg import GeoPoint
+import geodesy.utm
 
 class GNSSLogger:
     def __init__(self):
@@ -24,10 +26,8 @@ class GNSSLogger:
 
         self.prev_x = []
         self.prev_y = []
-        self.origin_lat = None
 
-        # rospy.Subscriber('/carla/ego_vehicle/gnss', NavSatFix, self.gnss_callback)
-        rospy.Subscriber('/ublox_gps/fix', NavSatFix, self.gnss_callback)
+        rospy.Subscriber('/gps', GPSMessage, self.gnss_callback)
         rospy.loginfo("GNSS Logger Started. Saving to: %s", self.csv_path)
 
         # Handle shutdown to plot at the end
@@ -38,12 +38,22 @@ class GNSSLogger:
     def gnss_callback(self, data):
         lat = data.latitude
         lon = data.longitude
+        h = data.altitude
+        x0 = data.eastOffset
+        y0 = data.northOffset
 
-        if self.origin_lat is None:
-            self.origin_lat = lat
+        # Create a GeoPoint
+        geo_point = GeoPoint()
+        geo_point.latitude = lat
+        geo_point.longitude = lon
+        geo_point.altitude = h
 
-        x = lon * math.cos(self.origin_lat * math.pi / 180) * math.pi * 6378.135 / 180 * 1000
-        y = lat * math.pi * 6378.135 / 180 * 1000
+        # Convert to UTM
+        utm_point = geodesy.utm.fromMsg(geo_point)  # returns a UTMPoint
+
+        # Compute ENU relative to reference offsets
+        x = utm_point.easting - x0
+        y = utm_point.northing - y0
 
         if len(self.prev_x) == 0 or len(self.prev_y) == 0:
             self.log_position(lat, lon, x, y)
@@ -54,7 +64,7 @@ class GNSSLogger:
             self.log_position(lat, lon, x, y)
 
     def log_position(self, lat, lon, x, y):
-        self.csv_writer.writerow([lat, lon])
+        self.csv_writer.writerow([x, y])
         self.csv_file.flush()
         self.prev_x.append(x)
         self.prev_y.append(y)

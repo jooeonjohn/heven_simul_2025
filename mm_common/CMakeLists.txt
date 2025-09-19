@@ -15,6 +15,7 @@ find_package(catkin REQUIRED COMPONENTS
   sensor_msgs
   shape_msgs
   std_msgs
+  morai_msgs
 )
 
 ## System dependencies are found with CMake's conventions
@@ -76,6 +77,7 @@ generate_messages(
   sensor_msgs   
   shape_msgs   
   std_msgs
+  morai_msgs
 )
 
 ################################################
@@ -110,7 +112,7 @@ generate_messages(
 catkin_package(
 #  INCLUDE_DIRS include
   # LIBRARIES mm_common
-  CATKIN_DEPENDS geometry_msgs roscpp rospy sensor_msgs shape_msgs std_msgs message_runtime
+  CATKIN_DEPENDS geometry_msgs roscpp rospy sensor_msgs shape_msgs std_msgs message_runtime morai_msgs
 #  DEPENDS system_lib
 )
 
