@@ -4,20 +4,17 @@
 #include <iostream>
 #include <cmath>
 #include <tf/transform_datatypes.h>
-#include <GeographicLib/UTMUPS.hpp>
+#include <geodesy/utm.h>
 
 namespace pose_parser
 {
     struct PoseParser::Impl
     {
-        std::string start;
         ros::Subscriber sub_gps;
         ros::Subscriber sub_heading;
         ros::Subscriber sub_mag;
         ros::Publisher pub_state;
 
-        double origin_lat; //[lat,lon]
-        double origin_lon;
         float origin_orientation = 0.0;
         
         float heading;
@@ -33,9 +30,7 @@ namespace pose_parser
 
     void PoseParser::Init(ros::NodeHandle &nh)
     {
-        ROS_ASSERT(nh.getParam("start", impl_->start));
         ROS_ASSERT(nh.getParam("carla_simulator", impl_->carla_simulator));
-        ReadOriginFromCSV(impl_->start);
 
         if(impl_->carla_simulator) 
         {
@@ -48,41 +43,6 @@ namespace pose_parser
         if(!impl_->carla_simulator) impl_->sub_mag = nh.subscribe("/imu/mag", 2,  &PoseParser::MagCallback, this);
         // initialize publishers
         impl_->pub_state = nh.advertise<geometry_msgs::Pose2D>("state", 1);
-    }
-
-    void PoseParser::SetOrigin(double lat, double lon)
-    {
-        impl_->origin_lat = lat;
-        impl_->origin_lon = lon;
-    }
-
-    void PoseParser::ReadOriginFromCSV(const std::string &filename)
-    {
-        std::ifstream file(filename);
-        if (!file.is_open())
-        {
-            std::cerr << "Failed to open origin CSV file: " << filename << std::endl;
-            return;
-        }
-
-        std::string line;
-        if (std::getline(file, line))
-        {
-            std::stringstream ss(line);
-            std::string item;
-
-            std::getline(ss, item, ',');
-            double lat = std::stod(item);
-            std::getline(ss, item, ',');
-            double lon = std::stod(item);
-
-            SetOrigin(lat, lon);
-            ROS_INFO_STREAM("Origin loaded from " << filename << ": (" << lat << ", " << lon << ")");
-        }
-        else
-        {
-            std::cerr << "Origin CSV file is empty: " << filename << std::endl;
-        }
     }
 
     void PoseParser::HeadingCallback(const sensor_msgs::Imu &msg)
@@ -119,16 +79,14 @@ namespace pose_parser
     {
         geometry_msgs::Pose2D temp;
         // converting current position coordinate gps to xy
-        using namespace GeographicLib;
-
-        int zone;
-        bool northp;
-        double x, y;
-        UTMUPS::Forward(lat, lon, zone, northp, x, y);
-
+        geographic_msgs::GeoPoint geo_point;
+        geo_point.latitude = lat;
+        geo_point.longitude = lon;
+        geo_point.altitude = h;
+        geodesy::UTMPoint utm_point(geo_point);
         // Compute ENU coordinates relative to reference point
-        temp.x  = x - x0;
-        temp.y = y - y0;
+        temp.x  = utm_point.easting - x0;
+        temp.y = utm_point.northing - y0;
         temp.theta = heading;
 
         return temp;

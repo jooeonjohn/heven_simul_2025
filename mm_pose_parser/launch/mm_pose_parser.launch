@@ -12,7 +12,6 @@
                 <remap from="~heading" to="$(arg imu_topic_name)"/>
                 <!--publish-->
                 <remap from="~state" to="/mm_pose_parser/pose"/>
-                <param name="start" value="/home/heven/catkin_ws/src/heven_mm_2025/mm_common/csv/$(arg file_name).csv"/>
                 <!-- CARLA Simulator Selection -->
                 <param name="carla_simulator" value="$(arg carla)"/>
         </node>

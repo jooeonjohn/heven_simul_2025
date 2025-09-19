@@ -7,6 +7,7 @@
 #include <geometry_msgs/Quaternion.h>
 #include <geometry_msgs/Vector3Stamped.h>
 #include <sensor_msgs/Imu.h>
+#include <geographic_msgs/GeoPoint.h>
 
 #include <ros/ros.h>
 #include <memory>
@@ -21,8 +22,6 @@ namespace pose_parser
         ~PoseParser();
 
         void Init(ros::NodeHandle &nh);
-        void SetOrigin(double lat, double lon);
-        void ReadOriginFromCSV(const std::string &filename);
         void GPSCallback(const morai_msgs::GPSMessage &msg);
         void HeadingCallback(const sensor_msgs::Imu &msg);
         void MagCallback(const geometry_msgs::Vector3Stamped &msg);

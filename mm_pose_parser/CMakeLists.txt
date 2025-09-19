@@ -13,23 +13,21 @@ find_package(catkin REQUIRED COMPONENTS
   geometry_msgs
   morai_msgs
   tf
+  geodesy
 )
 
 find_package(PkgConfig REQUIRED)
-pkg_check_modules(GEOGRAPHICLIB REQUIRED geographic)
 
 catkin_package(
 #  INCLUDE_DIRS include
  LIBRARIES mm_pose_parser
- CATKIN_DEPENDS roscpp std_msgs mm_common  ublox_msgs sensor_msgs geometry_msgs morai_msgs tf
+ CATKIN_DEPENDS roscpp std_msgs mm_common  ublox_msgs sensor_msgs geometry_msgs morai_msgs tf geodesy
 #  DEPENDS system_lib
- DEPENDS GeographicLib
 )
 
 include_directories(
 include
   ${catkin_INCLUDE_DIRS}
-  ${GeographicLib_INCLUDE_DIRS}
 )
 
 add_executable(mm_pose_parser
@@ -42,5 +40,4 @@ add_dependencies(mm_pose_parser mm_pose_parser
 
 target_link_libraries(mm_pose_parser
   ${catkin_LIBRARIES}
-  ${GeographicLib_LIBRARIES}
 )
