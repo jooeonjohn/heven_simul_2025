@@ -1,0 +1,19 @@
+<launch>
+        <arg name="file_name" default="carla_yesun"/>
+        <arg name="carla" default="true"/>
+
+        <arg name="imu_topic_name" value="/imu/data" unless="$(arg carla)"/>
+        <arg name="imu_topic_name" value="/imu" if="$(arg carla)"/>
+
+        
+        <node pkg="mm_pose_parser" name="mm_pose_parser" type="mm_pose_parser" output="screen">
+                <!--subscribe-->
+                <remap from="~gps" to="/gps"/>
+                <remap from="~heading" to="$(arg imu_topic_name)"/>
+                <!--publish-->
+                <remap from="~state" to="/mm_pose_parser/pose"/>
+                <param name="start" value="/home/heven/catkin_ws/src/heven_mm_2025/mm_common/csv/$(arg file_name).csv"/>
+                <!-- CARLA Simulator Selection -->
+                <param name="carla_simulator" value="$(arg carla)"/>
+        </node>
+</launch>
