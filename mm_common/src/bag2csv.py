@@ -15,7 +15,7 @@ class GNSSLogger:
     def __init__(self):
         rospy.init_node('gnss_logger', anonymous=True)
 
-        self.csv_dir = os.path.expanduser('~/catkin_ws/src/heven_mm_2025/mm_common/csv')
+        self.csv_dir = os.path.expanduser('~/catkin_ws/src/heven_simul_2025/mm_common/csv')
         if not os.path.exists(self.csv_dir):
             os.makedirs(self.csv_dir)
         self.csv_path = os.path.join(self.csv_dir, 'gps_log.csv')
