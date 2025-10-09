@@ -73,7 +73,7 @@ namespace planner
 
         // initialize subscriber
         impl_->sub_pose = nh.subscribe("pose", 2,  &Planner::PoseCallback, this);
-        impl_->sub_vel = nh.subscribe("/ublox_gps/fix_velocity", 1,  &Planner::VelocityCallback, this);
+        impl_->sub_vel = nh.subscribe("/Competition_topic", 1,  &Planner::VelocityCallback, this);
         impl_->sub_ogm = nh.subscribe<nav_msgs::OccupancyGrid>("ogm", 2, &Planner::ogmCallback, this);
         
         // initialize publishers
@@ -82,7 +82,7 @@ namespace planner
         impl_->pub_target = nh.advertise<visualization_msgs::Marker>("/mm_planner/target", 1);
         impl_->pub_dwa_path = nh.advertise<nav_msgs::Path>("/mm_planner/dwa_path", 1);
          
-        impl_->path = impl_->gps_tracker.Init(impl_->pathfile, impl_->lad, impl_->vel, impl_->stanley_k, impl_->pid_kd, impl_->pid_ki, impl_->pid_kd);
+        impl_->path = impl_->gps_tracker.Init(impl_->pathfile, impl_->lad, impl_->vel, impl_->stanley_k, impl_->pid_kp, impl_->pid_ki, impl_->pid_kd);
         impl_->dwa_tracker.Init(impl_->pathfile, impl_->dwa_lad, impl_->dwa_max_speed, impl_->dwa_min_speed,
             impl_->dwa_max_omega, impl_->dwa_min_omega, impl_->dwa_dt, impl_->dwa_window,
             impl_->dwa_goal_weight, impl_->dwa_obs_weight, impl_->dwa_filter_window_size

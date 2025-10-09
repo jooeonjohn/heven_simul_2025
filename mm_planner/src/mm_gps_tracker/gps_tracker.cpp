@@ -146,11 +146,11 @@ namespace gps_tracker
         float target_theta = std::atan2(target.pose.position.y - pose.y, target.pose.position.x - pose.x) - path_theta;
         float cross_track_error = std::hypot(target.pose.position.x - pose.x, target.pose.position.y - pose.y) * std::sin(target_theta);
         // Calculate the steering angle using the Stanley controller formula
-        float steering_angle = (heading_error + std::atan2(impl_->k * cross_track_error, impl_->vel));
+        float steering_angle = (heading_error + std::atan2(impl_->k * cross_track_error, impl_->vel/3.6)); // use m/s
 
         // Set the command values
         impl_->cmd.accel = std::max(std::min(PID(curr_vel, impl_->vel), 1.0f), 0.0f);
-        impl_->cmd.steering = steering_angle;
+        impl_->cmd.steering = steering_angle/(40*M_PI/180);
         impl_->cmd.brake = 0;
 
 
@@ -192,6 +192,8 @@ namespace gps_tracker
         impl_->pid_prev_error = error;
 
         float output = impl_->kp * error + impl_->ki * impl_->pid_integral + impl_->kd * derivative;
+
+        // std::cout << "error: " << error << ", throttle: " << output << std::endl;
         return output;
     }
 }

@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" 
+    xmlns:sensor="http://playerstage.sourceforge.net/gazebo/xmlschema/#sensor"
+    xmlns:controller="http://playerstage.sourceforge.net/gazebo/xmlschema/#controller"
+    xmlns:interface="http://playerstage.sourceforge.net/gazebo/xmlschema/#interface"
+    name="erp42">
+
+  <link name="base_link">
+    <visual>
+      <origin rpy="1.5708 0 1.5708" xyz="-1.0 0 0.4"/>
+      <geometry>
+         <mesh filename="package://mm_vis/urdf/erp42.stl" scale="0.0014 0.0024 0.0024"/>
+      </geometry>
+      <material name="car_orange">
+        <color rgba="0.92 0.45 0.02 0.5"/>
+      </material>
+    </visual>
+  </link>
+</robot>

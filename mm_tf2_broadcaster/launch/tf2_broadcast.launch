@@ -1,0 +1,30 @@
+<launch>
+        <!--param setting-->
+        <arg name="param_file_name"     value="frame"/>
+        <arg name="synch"               value="false" />
+        <arg name="synch_topic"         value="base_link"/>
+
+        <!-- tf static -->
+        <!-- tf for map, sensors -->
+        <node pkg="mm_tf2_broadcaster" name="tf2_static_broadcaster" type="mm_tf2_static_broadcaster" output="screen">
+                <!--param-->
+                <param name="synch"             value="$(arg synch)"            type="bool" />
+                <param name="synch_topic"       value="$(arg synch_topic)"      type="str" />
+                <!--load config file-->
+                <rosparam command="load"        file="$(find mm_tf2_broadcaster)/config/$(arg param_file_name).yaml" />
+        </node>
+ 
+        <!-- tf -->
+        <!-- tf for odom, base_link -->
+        <node pkg="mm_tf2_broadcaster" name="tf2_broadcaster" type="mm_tf2_broadcaster" output="screen">
+                <!--subscribe-->
+                <remap from="~StateEstimated"   to="/mm_pose_parser/pose" />
+                <!-- <remap from="~Feedback"         to="/rr_erp42/feedback_ext" /> -->
+                <!--param-->
+                <param name="synch"             value="$(arg synch)"            type="bool" />
+                <param name="synch_topic"       value="$(arg synch_topic)"      type="str" />
+                <!--load config file-->
+                <rosparam command="load"        file="$(find mm_tf2_broadcaster)/config/$(arg param_file_name).yaml" />
+        </node>
+
+</launch>

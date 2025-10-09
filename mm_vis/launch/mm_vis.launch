@@ -1,0 +1,19 @@
+<launch>
+        <arg name="vis_mode"    default="real"/>
+        <!-- <arg name="vis_mode"    default="carla"/> -->
+
+        <!-- car model visualizing -->
+        <!-- <arg name="model" default="$(find mm_vis)/urdf/erp42.urdf"/> -->
+        <arg name="model" default="$(find mm_vis)/urdf/erp42.xacro"/>
+        <param name="erp42"
+           command="$(find xacro)/xacro --inorder $(arg model)"/>
+
+
+        <group if="$(eval arg('vis_mode') == 'real')">
+                <node type="rviz" name="rviz" pkg="rviz" args="-d $(find mm_vis)/rviz/morai.rviz" />
+        </group>
+        <group if="$(eval arg('vis_mode') == 'carla')">
+                <node type="rviz" name="rviz" pkg="rviz" args="-d $(find mm_vis)/rviz/carla.rviz" />
+        </group>
+
+</launch>
