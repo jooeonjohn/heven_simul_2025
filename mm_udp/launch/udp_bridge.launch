@@ -1,7 +1,7 @@
 <launch>
     <!-- UDP to ROS bridge -->
-    <node pkg="mm_udp" type="udp2ros.py" name="udp2ros_node" output="screen" />
+    <node pkg="mm_udp" type="udp2ros.py" name="udp2ros_node" output="log" />
 
     <!-- ROS to UDP bridge -->
-    <node pkg="mm_udp" type="ros2udp.py" name="ros2udp_node" output="screen" />
+    <node pkg="mm_udp" type="ros2udp.py" name="ros2udp_node" output="log" />
 </launch>

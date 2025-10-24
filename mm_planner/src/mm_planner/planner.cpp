@@ -167,6 +167,10 @@ namespace planner
         std::cout << "start_dist : " << start_dist << ", end_dist : " << end_dist << std::endl;
 
         if (start_dist < impl_->dist_threshold) impl_->mission_on = true;
+        if (impl_->mission_on && end_dist < impl_->dist_threshold) {
+            impl_->current_mission++;
+            impl_->mission_on = false;
+        }
          
         if (impl_->mission_on){
             

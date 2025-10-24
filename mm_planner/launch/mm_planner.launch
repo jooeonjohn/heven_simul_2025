@@ -10,6 +10,15 @@
                 <arg name="carla" value="$(arg carla)"/>
         </include>
 
+        <!-- tf -->
+        <include file="$(find mm_tf2_broadcaster)/launch/tf2_broadcast.launch"/>
+        
+        <!-- vis -->
+        <include file="$(find mm_vis)/launch/mm_vis.launch"/>
+
+        <!-- udp -->
+        <include file="$(find mm_udp)/launch/udp_bridge.launch"/>
+
         <!-- main planner -->
         <node pkg="mm_planner" name="mm_planner" type="mm_planner" output="screen">
 
@@ -23,7 +32,7 @@
                 <param name="mission_points_path" value="/home/heven/catkin_ws/src/heven_simul_2025/mm_planner/config/simul_missionpoints.csv"/>
 
                 <!-- Mission parameters -->
-                <param name="dist_threshold" value="0.5"/>
+                <param name="dist_threshold" value="1.0"/>
                 <param name="current_mission" value="0"/>
                 <param name="mission_on" value="false"/>
 
