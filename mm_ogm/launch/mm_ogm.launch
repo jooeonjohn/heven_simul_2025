@@ -1,0 +1,21 @@
+<launch>
+        <arg name="lidar_topic_name" default="/ground_segmentation/nonground"/>
+        
+        <!-- patchworkpp -->
+        <include file="$(find patchworkpp)/launch/demo.launch"/>
+
+        <node pkg="mm_ogm" name="mm_ogm" type="mm_ogm" output="log">
+                <!--subscribe-->
+                <remap from="~pose" to="/mm_pose_parser/pose"/>
+                <remap from="~lidar" to="$(arg lidar_topic_name)"/>
+                <!--publish-->
+                <remap from="~ogm" to="/mm_ogm/occupancy_grid"/>
+
+                <param name="x_max" value="12.0" />
+                <param name="x_min" value="-1.0" />
+                <param name="y_max" value="7.0" />
+                <param name="y_min" value="-7.0" />
+                <param name="inflation_range" value="40" />
+                <param name="inflation_weight" value="2.5" />
+        </node>
+</launch>

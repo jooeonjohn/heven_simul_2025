@@ -29,10 +29,10 @@ namespace dwa_tracker {
 
         // Core methods
         void Init(const std::string& pathfile, float lad, float max_speed, float min_speed, float max_omega, 
-                   float min_omega, float dt, float window, float goal_weight, float obs_weight, int filter_window_size);
+                   float min_omega, float dt, float window, float goal_weight, float obs_weight);
         geometry_msgs::PoseStamped transformationToBaseLink(const geometry_msgs::PoseStamped &target_map_frame);
         morai_msgs::CtrlCmd dynamicWindowApproach(geometry_msgs::Pose2D &pose, 
-            const nav_msgs::OccupancyGrid::ConstPtr &ogm, nav_msgs::Path &dwa_path, geometry_msgs::PoseStamped &target);
+            const nav_msgs::OccupancyGrid::ConstPtr &ogm, nav_msgs::Path &dwa_path, geometry_msgs::PoseStamped &target, float current_speed);
         void applyMovingAverageFilter(float& speed, float& steer);
         PathOutput simulateTrajectory(float v, float theta);
         float isCollision(float x, float y);

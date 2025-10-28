@@ -19,6 +19,9 @@
         <!-- udp -->
         <include file="$(find mm_udp)/launch/udp_bridge.launch"/>
 
+        <!-- ogm -->
+        <include file="$(find mm_ogm)/launch/mm_ogm.launch"/>
+
         <!-- main planner -->
         <node pkg="mm_planner" name="mm_planner" type="mm_planner" output="screen">
 
@@ -45,15 +48,14 @@
                 <param name="pid_kd" value="0.01"/>
 
                 <!-- DWA parameters -->
-                <param name="dwa_lad" value="4.5"/>
+                <param name="dwa_lad" value="8.0"/>
                 <param name="dwa_dt" value="1.5"/>
-                <param name="dwa_window" value="40.0"/>
-                <param name="dwa_goal_weight" value="0.7"/>
-                <param name="dwa_obs_weight" value="300.0"/>
-                <param name="dwa_filter_window_size" value="5"/>
-                <param name="dwa_min_speed" value="3.0"/>
-                <param name="dwa_max_speed" value="4.0"/>
+                <param name="dwa_window" value="25.0"/>
+                <param name="dwa_goal_weight" value="10.0"/>
+                <param name="dwa_obs_weight" value="600.0"/>
+                <param name="dwa_min_speed" value="17.0"/>
+                <param name="dwa_max_speed" value="22.0"/>
                 <param name="dwa_min_omega" value="-45.0"/>
-                <param name="dwa_max_omega" value="55.0"/>
+                <param name="dwa_max_omega" value="45.0"/>
         </node>
 </launch>

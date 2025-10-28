@@ -67,8 +67,6 @@ namespace planner
         ROS_ASSERT(nh.getParam("dwa_window", impl_->dwa_window));
         ROS_ASSERT(nh.getParam("dwa_goal_weight", impl_->dwa_goal_weight));
         ROS_ASSERT(nh.getParam("dwa_obs_weight", impl_->dwa_obs_weight));
-        ROS_ASSERT(nh.getParam("dwa_filter_window_size", impl_->dwa_filter_window_size));
-
         ReadMissionPoints(impl_->mission_points_path);
 
         // initialize subscriber
@@ -85,7 +83,7 @@ namespace planner
         impl_->path = impl_->gps_tracker.Init(impl_->pathfile, impl_->lad, impl_->vel, impl_->stanley_k, impl_->pid_kp, impl_->pid_ki, impl_->pid_kd);
         impl_->dwa_tracker.Init(impl_->pathfile, impl_->dwa_lad, impl_->dwa_max_speed, impl_->dwa_min_speed,
             impl_->dwa_max_omega, impl_->dwa_min_omega, impl_->dwa_dt, impl_->dwa_window,
-            impl_->dwa_goal_weight, impl_->dwa_obs_weight, impl_->dwa_filter_window_size
+            impl_->dwa_goal_weight, impl_->dwa_obs_weight
         );
 
         impl_->timer = nh.createTimer(ros::Duration(0.1), &Planner::PublishPathCallback, this);
@@ -171,11 +169,13 @@ namespace planner
             impl_->current_mission++;
             impl_->mission_on = false;
         }
-         
+
         if (impl_->mission_on){
-            
-            impl_->cmd = impl_->gps_tracker.Stanley(impl_->pose, target, impl_->curr_vel);
-            
+            if(impl_->current_mission == 0 || impl_->current_mission == 1 || impl_->current_mission == 2 || impl_->current_mission == 4 || impl_->current_mission == 5) {
+                impl_->cmd = impl_->dwa_tracker.dynamicWindowApproach(impl_->pose, impl_->ogm, dwa_path, target, impl_->curr_vel);
+                impl_->pub_dwa_path.publish(dwa_path);
+            } 
+            else impl_->cmd = impl_->gps_tracker.Stanley(impl_->pose, target, impl_->curr_vel);
         }
         else impl_->cmd = impl_->gps_tracker.Stanley(impl_->pose, target, impl_->curr_vel);
 
