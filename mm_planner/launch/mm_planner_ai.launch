@@ -1,0 +1,43 @@
+<launch>
+        <!-- <arg name="file_name" value="carla_parking"/> -->
+        <arg name="file_name" value="ai"/>
+        <!-- <arg name="file_name" value="parkinglot_parking"/> -->
+        <arg name="carla" value="true"/>
+
+        <!-- tf -->
+        <include file="$(find mm_tf2_broadcaster)/launch/tf2_broadcast.launch"/>
+        
+        <!-- vis -->
+        <include file="$(find mm_vis)/launch/mm_vis.launch"/>
+
+        <!-- udp -->
+        <include file="$(find mm_udp)/launch/udp_bridge.launch"/>
+
+        <!-- traffic -->
+        <node pkg="yolopv2_simul" name="traffic_detector" type="traffic.py" output="log"/>
+
+        <!-- main planner -->
+        <node pkg="mm_planner" name="mm_planner" type="mm_planner_ai" output="screen">
+
+                <!--publish-->
+                <remap from="~command" to="/ctrl_cmd"/>
+
+                <param name="path" value="/home/heven/catkin_ws/src/heven_simul_2025/mm_common/csv/ai.csv"/>
+                <param name="mission_points_path" value="/home/heven/catkin_ws/src/heven_simul_2025/mm_planner/config/ai_missionpoints.csv"/>
+
+                <!-- Mission parameters -->
+                <param name="dist_threshold" value="2.0"/>
+                <param name="traffic_dist_threshold" value="5.0"/>
+                <param name="slow_dist_threshold" value="20.0"/>
+                <param name="current_mission" value="0"/>
+                <param name="mission_on" value="false"/>
+
+                <!-- Stanley parameters -->
+                <param name="lad" value="3.0"/>
+                <param name="vel" value="30.0"/>
+                <param name="stanley_k" value="2.0"/>
+                <param name="pid_kp" value="0.3"/>
+                <param name="pid_ki" value="0.0"/>
+                <param name="pid_kd" value="0.01"/>
+        </node>
+</launch>

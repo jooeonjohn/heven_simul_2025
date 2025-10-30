@@ -22,8 +22,8 @@ def txt_to_csv(txt_path, csv_path):
         print(f"❌ Error: {e}")
 
 if __name__ == "__main__":
-    txt_path = "/home/heven/catkin_ws/src/heven_simul_2025/mm_common/txt/25molit_main_mission.txt"
-    csv_path = "/home/heven/catkin_ws/src/heven_simul_2025/mm_common/csv/main.csv"
+    txt_path = "/home/heven/catkin_ws/src/heven_simul_2025/mm_common/txt/25molit_ai_mission.txt"
+    csv_path = "/home/heven/catkin_ws/src/heven_simul_2025/mm_common/csv/ai.csv"
 
     if not os.path.isfile(txt_path):
         print(f"❌ Input file not found: {txt_path}")

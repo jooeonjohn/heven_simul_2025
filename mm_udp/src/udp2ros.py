@@ -15,13 +15,21 @@ from morai_msgs.msg import ObjectStatus
 from geometry_msgs.msg import Vector3
 from std_msgs.msg import Header
 
+# IP = '127.0.0.1'
+# VEHICLE_PORT = 1909
+# COLLISION_PORT = 9092   # heven
+
 IP = '127.0.0.1'
-VEHICLE_PORT = 1909
-COLLISION_PORT = 9092   # heven
+VEHICLE_PORT = 1911
+COLLISION_PORT = 9092   # heven AI
 
 # IP = '192.168.0.11'
 # VEHICLE_PORT = 2211  
 # COLLSION_PORT =       # morai
+
+# IP = '192.168.0.11'
+# VEHICLE_PORT = 2211  
+# COLLSION_PORT =       # morai AI
 
 
 def signal_handler(sig, frame):
