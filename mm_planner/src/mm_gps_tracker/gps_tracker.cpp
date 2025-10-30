@@ -118,7 +118,7 @@ namespace gps_tracker
         return target;
     }
 
-    morai_msgs::CtrlCmd GPStracker::Stanley(const geometry_msgs::Pose2D &pose, geometry_msgs::PoseStamped &target, float &curr_vel)
+    morai_msgs::CtrlCmd GPStracker::Stanley(const geometry_msgs::Pose2D &pose, geometry_msgs::PoseStamped &target, float &curr_vel, bool is_slow)
     {
         // --- Start by assuming the first waypoint is the closest ---
         size_t target_index = 0;
@@ -149,7 +149,8 @@ namespace gps_tracker
         float steering_angle = (heading_error + std::atan2(impl_->k * cross_track_error, impl_->vel/3.6)); // use m/s
 
         // Set the command values
-        impl_->cmd.accel = std::max(std::min(PID(curr_vel, impl_->vel), 1.0f), 0.0f);
+        if (is_slow) impl_->cmd.accel = std::max(std::min(PID(curr_vel, 20.0), 1.0f), 0.0f);
+        else impl_->cmd.accel = std::max(std::min(PID(curr_vel, impl_->vel), 1.0f), 0.0f);
         impl_->cmd.steering = steering_angle/(40*M_PI/180);
         impl_->cmd.brake = 0;
 

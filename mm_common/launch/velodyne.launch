@@ -1,8 +1,15 @@
 <launch>
   <!-- declare arguments with default values -->
   <arg name="calibration" default="$(find velodyne_pointcloud)/params/VLP16db.yaml"/>
+
+  <!-- MORAI -->
+  <!-- <arg name="device_ip1" default="192.168.0.1" />
+  <arg name="device_ip2" default="192.168.0.1" /> -->
+  
+  <!-- HEVEN -->
   <arg name="device_ip1" default="127.0.0.1" />
   <arg name="device_ip2" default="127.0.0.1" />
+
   <arg name="frame_id1" default="velodyne1" />
   <arg name="manager1" default="$(arg frame_id1)_nodelet_manager" />
   <arg name="frame_id2" default="velodyne2" />

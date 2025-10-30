@@ -1,7 +1,10 @@
 <launch>
 
+<!-- patchworkpp -->
+<include file="$(find mm_common)/launch/velodyne.launch"/>
+
 <!-- <arg name="cloud_topic" default="/carla/ego_vehicle/lidar"/> -->
-<arg name="cloud_topic" default="/velodyne_points"/>
+<arg name="cloud_topic" default="/lidar1/velodyne_points"/>
 
   <node name="ground_segmentation" pkg="patchworkpp" type="demo" output="log">
     <rosparam command="load" file="$(find patchworkpp)/config/params.yaml" />

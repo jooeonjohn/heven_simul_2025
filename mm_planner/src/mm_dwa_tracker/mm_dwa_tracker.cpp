@@ -79,7 +79,7 @@ namespace dwa_tracker {
         target_map_frame = impl_->gps_tracker.findTarget(pose, target_index, curr_dist);
         target_base_link = dwaTracker::transformationToBaseLink(target_map_frame);
 
-        impl_->goal_x = target_base_link.pose.position.x / impl_->resolution;
+        impl_->goal_x = (target_base_link.pose.position.x + 1.0) / impl_->resolution;
         impl_->goal_y = -(target_base_link.pose.position.y / impl_->resolution) + impl_->center_offset; // Transform to OGM coordinate
         impl_->ogm_map = *ogm;
 
@@ -140,7 +140,7 @@ namespace dwa_tracker {
             score -= isCollision(x, y);
             score -= evaluateTrajectory(x, y, car_theta, v);
 
-            pose.pose.position.x = x * impl_->resolution - 1.5;
+            pose.pose.position.x = x * impl_->resolution - 1.0;
             pose.pose.position.y = y * -impl_->resolution;
             pose.pose.position.z = 0.0;
 

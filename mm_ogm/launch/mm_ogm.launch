@@ -11,11 +11,11 @@
                 <!--publish-->
                 <remap from="~ogm" to="/mm_ogm/occupancy_grid"/>
 
-                <param name="x_max" value="12.0" />
+                <param name="x_max" value="15.0" />
                 <param name="x_min" value="-1.0" />
                 <param name="y_max" value="7.0" />
                 <param name="y_min" value="-7.0" />
-                <param name="inflation_range" value="40" />
-                <param name="inflation_weight" value="2.5" />
+                <param name="inflation_range" value="18" />
+                <param name="inflation_weight" value="1.0" />
         </node>
 </launch>

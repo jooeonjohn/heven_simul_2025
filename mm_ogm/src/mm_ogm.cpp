@@ -162,21 +162,21 @@ namespace local_ogm_builder {
         int front = 0;
         int rear = -1;
 
-        GridCell queue[405] = {};
+        GridCell queue[20005] = {};
         queue[++rear] = {start_x, start_y, 0};
 
-        int visited[20005] = {};
+        int visited[50005] = {};
         visited[start_y * occupancy_grid_.info.width + start_x] = 1;
 
         while (front <= rear) {
             GridCell current = queue[front++];
 
-            if (current.distance >= inflation_range) continue;
-
+            if(current.distance >= inflation_range) continue;
+            if(front > 20000) continue;
             if(current.y >= 65 && current.y <= 75 && current.x >= 5 && current.x <= 17) continue;
 
             for (int dir = 0; dir < 4; dir++) {
-                if(rear > 400) return;
+                if(rear > 20000) return;
 
                 int nx = current.x + dx[dir];
                 int ny = current.y + dy[dir];
@@ -214,7 +214,6 @@ namespace local_ogm_builder {
     }
 
     void LocalOGMBuilder::publishOccupancyGrid() {
-        // nav_msgs::OccupancyGrid occupancy_grid;
         occupancy_grid_.header.frame_id = "base_link";
         occupancy_grid_.header.stamp = ros::Time(0);
         occupancy_grid_pub_.publish(occupancy_grid_);

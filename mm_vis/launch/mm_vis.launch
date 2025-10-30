@@ -10,7 +10,7 @@
 
 
         <group if="$(eval arg('vis_mode') == 'real')">
-                <node type="rviz" name="rviz" pkg="rviz" args="-d $(find mm_vis)/rviz/morai.rviz" />
+                <node type="rviz" name="rviz" pkg="rviz" args="-d $(find mm_vis)/rviz/morai_ogm.rviz" />
         </group>
         <group if="$(eval arg('vis_mode') == 'carla')">
                 <node type="rviz" name="rviz" pkg="rviz" args="-d $(find mm_vis)/rviz/carla.rviz" />

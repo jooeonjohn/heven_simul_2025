@@ -22,6 +22,12 @@
         <!-- ogm -->
         <include file="$(find mm_ogm)/launch/mm_ogm.launch"/>
 
+        <!-- lane -->
+        <include file="$(find yolopv2_simul)/launch/lane_detector.launch"/>
+
+        <!-- traffic -->
+        <node pkg="yolopv2_simul" name="traffic_detector" type="traffic.py" output="log"/>
+
         <!-- main planner -->
         <node pkg="mm_planner" name="mm_planner" type="mm_planner" output="screen">
 
@@ -35,7 +41,9 @@
                 <param name="mission_points_path" value="/home/heven/catkin_ws/src/heven_simul_2025/mm_planner/config/simul_missionpoints.csv"/>
 
                 <!-- Mission parameters -->
-                <param name="dist_threshold" value="1.0"/>
+                <param name="dist_threshold" value="2.0"/>
+                <param name="traffic_dist_threshold" value="5.0"/>
+                <param name="slow_dist_threshold" value="20.0"/>
                 <param name="current_mission" value="0"/>
                 <param name="mission_on" value="false"/>
 
@@ -48,14 +56,14 @@
                 <param name="pid_kd" value="0.01"/>
 
                 <!-- DWA parameters -->
-                <param name="dwa_lad" value="8.0"/>
+                <param name="dwa_lad" value="15.0"/>
                 <param name="dwa_dt" value="1.5"/>
-                <param name="dwa_window" value="25.0"/>
-                <param name="dwa_goal_weight" value="10.0"/>
+                <param name="dwa_window" value="15.0"/>
+                <param name="dwa_goal_weight" value="200.0"/>
                 <param name="dwa_obs_weight" value="600.0"/>
                 <param name="dwa_min_speed" value="17.0"/>
                 <param name="dwa_max_speed" value="22.0"/>
-                <param name="dwa_min_omega" value="-45.0"/>
-                <param name="dwa_max_omega" value="45.0"/>
+                <param name="dwa_min_omega" value="-55.0"/>
+                <param name="dwa_max_omega" value="55.0"/>
         </node>
 </launch>

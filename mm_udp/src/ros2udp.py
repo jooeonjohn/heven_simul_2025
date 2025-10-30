@@ -11,7 +11,10 @@ from lib.define.EgoCtrlCmd import EgoCtrlCmd
 from morai_msgs.msg import CtrlCmd
 
 IP = '127.0.0.1'
-PORT = 9093
+PORT = 9093   # HEVEN
+
+# IP = '192.168.0.100'
+# PORT = 2200     # MORAI
 
 def callback(msg, sender):
     """
@@ -19,11 +22,15 @@ def callback(msg, sender):
     """
     data = EgoCtrlCmd()
     data.ctrl_mode = 2  # AutoMode (or map this from ROS if needed)
-    data.gear = 4       # Example: D gear
+    if msg.accel < 0 :
+        data.gear = 2
+        data.accel = -msg.accel
+    else :
+        data.gear = 4
+        data.accel = msg.accel
     data.cmd_type = msg.longlCmdType
 
     # Map fields from ROS message
-    data.accel = msg.accel
     data.brake = msg.brake
     data.steer = msg.steering
     

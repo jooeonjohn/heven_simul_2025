@@ -39,6 +39,8 @@ src/mm_planner/main.cpp
 src/mm_planner/planner.cpp
 src/mm_gps_tracker/gps_tracker.cpp
 src/mm_dwa_tracker/mm_dwa_tracker.cpp
+src/mm_cut_in/cut_in.cpp
+src/mm_lane_tracker/lane_tracker.cpp
 )
 
 add_dependencies(mm_planner mm_planner

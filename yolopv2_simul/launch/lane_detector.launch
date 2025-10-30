@@ -1,0 +1,34 @@
+<launch>
+
+    <!-- Detection configuration -->
+    <arg name="weights"               default="/home/heven/catkin_ws/src/heven_simul_2025/yolopv2_simul/models/yolopv2.pt"/>
+    <arg name="confidence_threshold"  default="0.3"/>
+    <arg name="iou_threshold"         default="0.45"/>
+    <arg name="device"                default="0"/>
+    <arg name="agnostic_nms"          default="False"/>
+    
+    <!-- replace imgsz -->
+    <arg name="img-size"              default="640"/>
+
+    <!-- ROS topics -->
+    <arg name="input_image_topic"       default="/image_jpeg2/compressed"/>
+    <arg name="output_topic"            default="/yolov5/detections"/>
+
+    <!-- <node pkg="yolopv2_simul" name="LaneDetector" type="lane_detect.py" output="screen">
+        <param name="weights"               value="$(arg weights)"/>
+        <param name="confidence_threshold"  value="$(arg confidence_threshold)"/>
+        <param name="iou_threshold"         value="$(arg iou_threshold)" />
+        <param name="device"                value="$(arg device)" />
+        <param name="agnostic_nms"          value="$(arg agnostic_nms)" />
+
+        <param name="img-size"              value="$(arg img-size)"/>
+
+        <param name="input_image_topic"     value="$(arg input_image_topic)"/>
+    </node> -->
+
+    <!-- Lane Detector Postprocess Node -->
+    <node pkg="yolopv2_simul" name="LaneDetectorPostprocess" type="lane_detect_postprocess.py" output="log">
+        <param name="input_topic"           value="$(arg input_image_topic)"/>
+    </node>
+
+</launch>
